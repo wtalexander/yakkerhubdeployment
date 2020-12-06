@@ -1,0 +1,59 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: yakkerhub 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: yakkerhub
+  name: yakkerhub
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: yakkerhub
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: yakkerhub
+    spec:
+      containers:
+        - name: yakkerhub
+          image: talexander/yakkerhub:v2
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: yakkerhub
+  name: yakkerhub
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: NodePort
+  selector:
+    app.kubernetes.io/name: yakkerhub
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  namespace: yakkerhub
+  name: yakkerhub
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: yakkerhub
+              servicePort: 80
+
