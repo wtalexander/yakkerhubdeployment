@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: yakkerhub
-          image: talexander/yakkerhub:v4
+          image: talexander/yakkerhub:v6
           ports:
             - containerPort: 80
 ---
