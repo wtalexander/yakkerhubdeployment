@@ -18,6 +18,8 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: yakkerhub
+        tier: prod
+        team: teamawsome
     spec:
       containers:
         - name: yakkerhub
