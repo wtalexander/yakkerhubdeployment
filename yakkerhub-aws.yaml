@@ -24,6 +24,17 @@ spec:
       containers:
         - name: yakkerhub
           image: talexander/yakkerhub:v21
+          env:
+            - name: app1username
+              valueFrom: 
+                secretKeyRef:
+                  name: app1
+                  key: USERNAME
+            - name: app1password
+              valueFrom:
+                secretKeyRef:
+                  name: app1
+                  key: PASSWORD
           ports:
             - containerPort: 80
 ---
